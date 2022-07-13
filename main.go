@@ -1,8 +1,10 @@
 package main
 
 import (
+	"api_crowdfunding/auth"
 	"api_crowdfunding/handler"
 	"api_crowdfunding/user"
+	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +13,7 @@ import (
 )
 
 func main() {
-	dsn := "root:password@tcp(127.0.0.1:3307)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:mypassword@tcp(localhost:3306)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -20,6 +22,9 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
+	authService := auth.NewService()
+
+	fmt.Println(authService.GenerateToken(1001))
 
 	userHandler := handler.NewUserHandler(userService)
 
