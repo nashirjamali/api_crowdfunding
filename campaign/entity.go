@@ -9,8 +9,7 @@ type Campaign struct {
 	ShortDescription string
 	Description      string
 	Perks            string
-	BackerCount      int
-	GoalAmount       int
+	BackerCount      string
 	CurrentAmount    int
 	Slug             string
 	CreatedAt        time.Time
@@ -21,7 +20,7 @@ type CampaignImage struct {
 	ID         int
 	CampaignID int
 	FileName   string
-	IsPrimary  bool
+	IsPrimary  int
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
