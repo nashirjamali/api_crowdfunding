@@ -16,5 +16,5 @@ func NewRepository(db *gorm.DB) *repository {
 }
 
 func FindAll() ([]Campaign, error) {
-	
+
 }
