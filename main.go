@@ -18,7 +18,7 @@ import (
 func main() {
 	// dsn := "root:password@tcp(localhost:3307)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
 	dsn := "root:mypassword@tcp(localhost:3306)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
-	// dsn := "root:password@tcp(localhost:3307)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
