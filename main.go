@@ -3,35 +3,31 @@ package main
 import (
 	"api_crowdfunding/auth"
 	"api_crowdfunding/campaign"
+	"api_crowdfunding/config"
+
+	// "api_crowdfunding/campaign"
 	"api_crowdfunding/handler"
 	"api_crowdfunding/helper"
 	"api_crowdfunding/user"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 func main() {
-	// dsn := "root:password@tcp(localhost:3307)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := "root:mypassword@tcp(localhost:3306)/crowdfunding?charset=utf8mb4&parseTime=True&loc=Local"
+	config.Init()
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	userRepository := user.NewRepository(config.DB)
+	campaignRepository := campaign.NewRepository(config.DB)
 
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	userRepository := user.NewRepository(db)
-	campaignRepository := campaign.NewRepository(db)
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
+	campaignService := campaign.NewService(campaignRepository)
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")
@@ -40,6 +36,8 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvaibility)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 }

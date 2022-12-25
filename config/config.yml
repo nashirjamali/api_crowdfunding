@@ -1,0 +1,6 @@
+database:
+  user: 'root'
+  pass: 'password'
+  host: 'localhost'
+  db: 'crowdfunding'
+  port: 3307
