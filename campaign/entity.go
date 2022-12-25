@@ -13,6 +13,7 @@ type Campaign struct {
 	Description      string
 	Perks            string
 	BackerCount      string
+	GoalAmount       int
 	CurrentAmount    int
 	Slug             string
 	User             user.User `gorm:"foreignKey:UserID"`
